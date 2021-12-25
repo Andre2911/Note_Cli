@@ -6,26 +6,26 @@ import {
     LOGOUT,
   } from "./types";
   
-  import AuthService from "../service/auth.service";
+  // import AuthService from "../service/auth.service";
   
   export const register = (username, email, password) => (dispatch) => {
-    return AuthService.register(username, email, password).then(
-      () => {
-        dispatch({
-          type: REGISTER_SUCCESS,
-        });
+    // return AuthService.register(username, email, password).then(
+    //   () => {
+    //     dispatch({
+    //       type: REGISTER_SUCCESS,
+    //     });
 
-        return Promise.resolve();
-      },
-      () => {
-        dispatch({
-          type: REGISTER_FAIL,
-        });
+    //     return Promise.resolve();
+    //   },
+    //   () => {
+    //     dispatch({
+    //       type: REGISTER_FAIL,
+    //     });
 
   
-        return Promise.reject();
-      }
-    );
+    //     return Promise.reject();
+    //   }
+    // );
   };
 
   export const login = (data) => (dispatch) => {
