@@ -21,7 +21,7 @@ export const Graficos = (e) => {
                     </View>
                 {db.map(item =>{
                     return(
-                    <View style={styles.container_tarea} key={item.KEY}> 
+                    <View style={styles.container_tarea} key={item.key}> 
                         <Text style={styles.text_tarea}>•  {item.name} </Text>
                         <View style={styles.text_tarea_point}>
                             <View style={[styles.category__point, {backgroundColor: item.color}]}></View>
