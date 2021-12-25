@@ -16,6 +16,10 @@ import { login } from './actions/auth'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
+LogBox.ignoreAllLogs();
+
 const Stack = createNativeStackNavigator();
 const Stack_Home = createNativeStackNavigator();
 const Stack_Register = createNativeStackNavigator();

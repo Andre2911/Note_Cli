@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-// import { Entypo } from '@expo/vector-icons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STATUS_BAR_HEIGHT =  0;
@@ -58,7 +58,7 @@ export const renderNavBar = (e) => {
           <Text style={{color:"#fff",fontSize:19, fontWeight: 'bold'}}>Página de Inicio</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconRight} onPress={drawer_menu}>
-          {/* <Entypo name="menu" size={35} color="white" /> */}
+          <MaterialIcons name="menu" size={35} color="white" />
         </TouchableOpacity>
       </View>
     </View>

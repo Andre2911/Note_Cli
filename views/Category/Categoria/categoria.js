@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { StyleSheet, Text, View, Dimensions,TouchableOpacity, TextInput,FlatList, Modal, Alert, Pressable} from 'react-native';
-// import { FontAwesome,Ionicons } from '@expo/vector-icons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NewCategory from '../Categorias/NewCategory'
 
@@ -72,7 +72,7 @@ export const Categoria = (e) => {
 
             <Text style={styles.text}>{e.extraData}</Text>
             <View style={styles.container_search}>
-                {/* <FontAwesome name="search" size={24} color="#7a7a7a" style={styles.icon_search} /> */}
+                <MaterialIcons name="search" size={28} color="#7a7a7a" style={styles.icon_search} />
                 <TextInput 
                     style={styles.text_input} 
                     onChangeText={onChangeNumber}
@@ -93,7 +93,7 @@ export const Categoria = (e) => {
                 }
             </View>
             <TouchableOpacity style={styles.container_add} onPress={()=>setModalVisible(!modalVisible)}>
-                {/* <Ionicons name="add-circle-sharp" size={58} color="#E0AD12" /> */}
+                <MaterialIcons name="add-circle" size={58} color="#E0AD12" />
             </TouchableOpacity>
         </View>
     )
@@ -114,6 +114,9 @@ const styles = StyleSheet.create({
     text_input: {
         padding: 10,
         color: '#fff',
+        // borderColor: '#fff',
+        // borderWidth: 1,
+        paddingRight: 150
     },
     icon_search:{
         padding: 10

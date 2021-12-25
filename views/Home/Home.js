@@ -1,13 +1,11 @@
 import React, { useState }  from 'react'
-import { StyleSheet, Dimensions,StatusBar} from 'react-native';
+import { StyleSheet,StatusBar} from 'react-native';
 import { title, renderNavBar } from './components/parallax_header';
 import { RenderContent } from './components/parallax_body';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
 import background from '../../assets/background.png';
 import { Categorie } from '../Category'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const {height: SCREEN_HEIGHT} = Dimensions.get('window');
-const IS_IPHONE_X = SCREEN_HEIGHT === 812 || SCREEN_HEIGHT === 896;
 const HEADER_HEIGHT = 64;
 
 const Stack = createNativeStackNavigator();

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, Dimensions,TouchableOpacity,SafeAreaView,ScrollView,Alert, Modal} from 'react-native';
-// import { AntDesign,FontAwesome5,Feather   } from '@expo/vector-icons';
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 // import LinearGradient from 'react-native-linear-gradient';
 import NewCategory from '../../Category/Categorias/NewCategory'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -65,15 +66,15 @@ export const RenderContent = (props) => {
         <View style={styles.container_categories_header}>
             <TouchableOpacity style={styles.container_title} onPress={()=>goCategorias()}>
                 <Text style={styles.text}>CATEGORIAS  </Text>
-                {/* <AntDesign name="right" size={16} color="#E0AD12" style={{marginTop: 2}} /> */}
+                <AntDesign name="right" size={16} color="#E0AD12" style={{marginTop: 2}} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.container_icon} onPress={() => setModalVisible(!modalVisible)}>
-            {/* <FontAwesome5 name="notes-medical" size={20} color="#fff" /> */}
+              <MaterialIcons name="note-add" size={20} color="#fff" />
             </TouchableOpacity>
             
         </View>
         {/* <TouchableOpacity style={styles.container_icon} onPress={() => borrar()}>
-            <FontAwesome5 name="notes-medical" size={20} color="#fff" />
+        <MaterialIcons name="note-add" size={20} color="#fff" />
             </TouchableOpacity> */}
         <SafeAreaView style={styles.container_categories_body}>
             <ScrollView
@@ -111,7 +112,7 @@ export const RenderContent = (props) => {
                 <Text style={styles.text}>TAREAS PENDIENTES  </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.container_icon}>
-            {/* <Feather name="more-horizontal" size={20} color="#fff" /> */}
+            <MaterialIcons name="more-vert" size={20} color="#fff" />
             </TouchableOpacity>
         </View>
         <SafeAreaView style={styles.container_categories_body}>

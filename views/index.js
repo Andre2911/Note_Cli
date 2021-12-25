@@ -5,8 +5,8 @@ import { Home } from './Home/Home'
 import { Categorias } from './Category/Categorias/categorias'
 import { Graficos } from './Category/Graficos/graficos';
 import { Favoritos } from './Favoritos/Favoritos.js'
-// import { Entypo, AntDesign } from '@expo/vector-icons';
-import {View, Text} from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const Drawer = createDrawerNavigator();
 
@@ -25,36 +25,35 @@ function HomeScreen(e) {
       <Drawer.Screen 
           name="Página de Inicio"
           component={Home} 
-          // options={{ 
-          //   // headerShown: false,
-          //     drawerIcon:({color})=>(
-          //       <Entypo name="home" size={24} color={color} />
-          //     )}}
+          options={{ 
+              drawerIcon:({color})=>(
+                <MaterialIcons name="home" size={24} color={color} />
+              )}}
               />
               
       <Drawer.Screen 
           name="Favoritos" 
           component={Favoritos} 
-          // options={{ 
-          //     drawerIcon:({color})=>(
-          //       <AntDesign name="star" size={24} color={color} />
-          // )}}
+          options={{ 
+              drawerIcon:({color})=>(
+                <MaterialIcons name="star" size={24} color={color} />
+          )}}
           />
       <Drawer.Screen 
           name="Categorias" 
           component={Categorias} 
-          // options={{ 
-          //     drawerIcon:({color})=>(
-          //       <AntDesign name="inbox" size={24} color={color} />
-          // )}}
+          options={{ 
+              drawerIcon:({color})=>(
+                <MaterialIcons name="inbox" size={24} color={color} />
+          )}}
           />
       <Drawer.Screen 
           name="Gráficas" 
           component={Graficos} 
-          // options={{ 
-          //     drawerIcon:({color})=>(
-          //       <AntDesign name="linechart" size={24} color={color} />
-          // )}}
+          options={{ 
+              drawerIcon:({color})=>(
+                <AntDesign name="linechart" size={24} color={color} />
+          )}}
           />
     </Drawer.Navigator>
     

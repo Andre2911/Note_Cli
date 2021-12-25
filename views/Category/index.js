@@ -4,7 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Categoria} from './Categoria/categoria'
 import { Graficos } from './Graficos/graficos'
 import { Hecho } from './Hecho/hecho'
-// import { FontAwesome5,FontAwesome,Entypo   } from '@expo/vector-icons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign'
+
 
 const Tab = createBottomTabNavigator();
 
@@ -24,9 +26,9 @@ export const Categorie = (e) => {
               options={{
                 headerShown: false,
                 tabBarLabel: 'Tareas',
-                // tabBarIcon: ({color, size}) => (
-                //     <FontAwesome5 name="tasks" size={size+4} color={color} />
-                // )
+                tabBarIcon: ({color, size}) => (
+                    <MaterialIcons name="home" size={size+4} color={color} />
+                )
                 }}>
                     {props => <Categoria {...props} extraData={e.route.params.titulo} />}
                 </Tab.Screen>
@@ -35,9 +37,9 @@ export const Categorie = (e) => {
               options={{
                 headerShown: false,
                 tabBarLabel: 'Gráficos',
-                // tabBarIcon: ({color, size}) => (
-                //     <FontAwesome name="line-chart" size={size+4} color={color} />
-                // )
+                tabBarIcon: ({color, size}) => (
+                    <AntDesign name="linechart" size={size+4} color={color} />
+                )
                 }}>
                     {props => <Graficos {...props} extraData={e.route.params.titulo} />}
                 </Tab.Screen>
@@ -46,9 +48,9 @@ export const Categorie = (e) => {
         options={{
         headerShown: false,
         tabBarLabel: 'Hecho',
-        // tabBarIcon: ({color, size}) => (
-        //     <Entypo name="check" size={size+4} color={color} />
-        // )
+        tabBarIcon: ({color, size}) => (
+            <MaterialIcons name="done" size={size} color={color} />
+        )
         }}>
             {props => <Hecho {...props} extraData={e.route.params.titulo} />}
         </Tab.Screen>

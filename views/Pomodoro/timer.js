@@ -1,6 +1,6 @@
 import React, {useRef, useEffect} from 'react'
 import { View, StyleSheet, Text,TouchableOpacity, Button } from 'react-native'
-// import { AntDesign, Feather, Entypo,MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Circle from './circle';
 import TimerText from './components/date'
 import BackgroundTimer from "react-native-background-timer";
@@ -81,11 +81,11 @@ export const Timer = ({...e}) => {
         <View style={styles.container}>
             <View style={styles.container_header}>
                 <TouchableOpacity onPress={()=>e.navigation.goBack()}>
-                    {/* <AntDesign name="close" size={20} color="white" /> */}
+                    <MaterialIcons name="close" size={20} color="white" />
                 </TouchableOpacity>
                 <Text style={styles.title}>{metodo.metodo}</Text>
                 <TouchableOpacity onPress={()=>e.navigation.navigate('settings')}>
-                    {/* <Feather name="settings" size={20} color="white" /> */}
+                    <MaterialIcons name="settings" size={20} color="white" />
                 </TouchableOpacity>
             </View>
             <Text style={styles.tarea}>{e.route.params.extraData}</Text>
@@ -108,17 +108,17 @@ export const Timer = ({...e}) => {
             </TouchableOpacity>
             <View style={styles.container_footer}>
                 <TouchableOpacity onPress={()=>setMetodo({metodo: "Pomodoro"})} >
-                    {/* <MaterialIcons name="timer" size={20} color="white" /> */}
+                    <MaterialIcons name="timer" size={20} color="white" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>setMetodo({metodo: "Temporizador"})}>
-                {/* <Entypo name="back-in-time" size={20} color="white" /> */}
+                <MaterialIcons name="history" size={20} color="white" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>setMetodo({metodo: "Cronómetro"})}>
-                {/* <Entypo name="back-in-time" size={20} color="white" style={{transform: [{rotateY: '180deg'}]}}/> */}
+                <MaterialIcons name="update" size={20} color="white"/>
                 </TouchableOpacity>
-                {renderStartButton()}
+                {/* {renderStartButton()}
           {renderPauseButton()}
-          {renderResetButton()}
+          {renderResetButton()} */}
             </View>
         </View>
     )

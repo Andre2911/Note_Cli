@@ -2,12 +2,11 @@ import React, {useEffect, useState} from 'react';
 import { View, StyleSheet, Text,TouchableOpacity } from 'react-native';
 import {
     DrawerContentScrollView,
-    DrawerItem,
     DrawerItemList
     
 } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../../actions/auth';
 
@@ -38,7 +37,7 @@ export function DrawerContent(props) {
               <DrawerItemList {...props}/>
             </DrawerContentScrollView>
         <TouchableOpacity style={styles.button_logout} onPress={()=>HandlePressLogout()}>
-        {/* <MaterialIcons name="logout" size={24} color="white" /> */}
+        <MaterialIcons name="logout" size={24} color="white" />
           <Text style={styles.text_logout} >Salir de Sesión</Text>
         </TouchableOpacity>
         </View>

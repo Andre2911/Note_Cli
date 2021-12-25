@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity, Text,Switch } from 'react-native';
-// import { AntDesign } from '@expo/vector-icons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export const Settings = (e) => {
     const [isEnabled, setIsEnabled] = React.useState(false);
@@ -11,7 +11,7 @@ export const Settings = (e) => {
         <View style={styles.container}>
             <View style={styles.container_header}>
                 <TouchableOpacity onPress={()=>e.navigation.goBack()} style={{justifyContent: 'center'}}>
-                    {/* <AntDesign name="close" size={20} color="white" /> */}
+                    <MaterialIcons name="close" size={20} color="white" />
                 </TouchableOpacity>
                 <Text style={styles.title}>Ajustes</Text>
                 <Text style={styles.title}></Text>
