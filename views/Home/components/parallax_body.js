@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, Dimensions,TouchableOpacity,SafeAreaView,ScrollView,Alert, Modal} from 'react-native';
 // import { AntDesign,FontAwesome5,Feather   } from '@expo/vector-icons';
-import LinearGradient from 'react-native-linear-gradient';
+// import LinearGradient from 'react-native-linear-gradient';
 import NewCategory from '../../Category/Categorias/NewCategory'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
@@ -89,16 +89,16 @@ export const RenderContent = (props) => {
                 return (
                   
                     <TouchableOpacity style={styles.box} onPress={()=>handleClick(item.name)} key={idx}>
-                      <LinearGradient
+                      {/* <LinearGradient
 
                     colors={[item.color, 'rgba(0,0,0,0.7)']}
 
                     end={{ x:1, y: 0.8 }}
-                    style={styles.imagen}>
+                    style={styles.imagen}> */}
                     <View style={[styles.imagen,{backgroundColor: 'transparent'}]} resizeMode={'cover'} blurRadius={0}>
                         <Text style={styles.text2}>{item.name}</Text>
                         </View>
-                        </LinearGradient>
+                        {/* </LinearGradient> */}
                     </TouchableOpacity>
                     
                 )

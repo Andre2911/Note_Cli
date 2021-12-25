@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Provider, useSelector,useDispatch } from 'react-redux';
 import HomeScreen from './views/index'
+import {Timer} from './views/Pomodoro/timer'
+import {Settings} from './views/Pomodoro/settings'
 import RegisterScreen from './views/Register/register1'
 import Register2Screen from './views/Register/register2'
 import Register3Screen from './views/Register/register3'
@@ -23,8 +25,8 @@ const HomeScreens = () => {
   return (
     <Stack_Home.Navigator>
       <Stack_Home.Screen name="Home2" component={HomeScreen} options={{ headerShown: false }} />
-      {/* <Stack_Home.Screen name="Inicio" component={Timer} options={{ headerShown: false }} />
-      <Stack_Home.Screen name="settings" component={Settings} options={{ headerShown: false }} /> */}
+      <Stack_Home.Screen name="Inicio" component={Timer} options={{ headerShown: false }} />
+      <Stack_Home.Screen name="settings" component={Settings} options={{ headerShown: false }} />
     </Stack_Home.Navigator>
   )
 }

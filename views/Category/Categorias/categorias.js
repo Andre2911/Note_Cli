@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Text,TouchableOpacity,ScrollView, FlatList } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient';
+// import LinearGradient from 'react-native-linear-gradient';
 
 export const Categorias = (e) => {
 
@@ -30,14 +30,14 @@ export const Categorias = (e) => {
                     activeOpacity={1} 
                     style={styles.container_category}
                     onPress={()=>HandlePress(item)}>
-                    <LinearGradient
+                    {/* <LinearGradient
 
                     colors={[item.posterUrl, 'rgba(0,0,0,0.7)']}
 
                     end={{ x:1, y: 0.8 }}
-                    style={[styles.container_category,{width: '100%'}]}>
+                    style={[styles.container_category,{width: '100%'}]}> */}
                     <Text style={styles.text}>{item.name}</Text>
-                    </LinearGradient>
+                    {/* </LinearGradient> */}
                 </TouchableOpacity>
                 
             )})}

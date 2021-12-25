@@ -1,28 +1,21 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-// import { DrawerContent } from './Home/components/DrawerContent';
-// import { Home } from './Home/Home'
-// import { Categorias } from './Category/Categorias/categorias'
-// import { Graficos } from './Category/Graficos/graficos';
-// import { Favoritos } from './Favoritos/Favoritos.js'
+import { DrawerContent } from './Home/components/DrawerContent';
+import { Home } from './Home/Home'
+import { Categorias } from './Category/Categorias/categorias'
+import { Graficos } from './Category/Graficos/graficos';
+import { Favoritos } from './Favoritos/Favoritos.js'
 // import { Entypo, AntDesign } from '@expo/vector-icons';
-// import 'react-native-gesture-handler';
 import {View, Text} from 'react-native';
 
 const Drawer = createDrawerNavigator();
 
-const test = () => {
-  return(
-    <View>
-      <Text style={{color: 'black'}}>Hola</Text>
-    </View>
-  )
-}
+
 function HomeScreen(e) {
 
     return (
     <Drawer.Navigator  
-      // drawerContent={props => <DrawerContent {...props} />}
+      drawerContent={props => <DrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
         drawerActiveTintColor: '#E0AD12',
@@ -31,8 +24,7 @@ function HomeScreen(e) {
         >
       <Drawer.Screen 
           name="Página de Inicio"
-          // component={Home} 
-          component= {test}
+          component={Home} 
           // options={{ 
           //   // headerShown: false,
           //     drawerIcon:({color})=>(
@@ -40,7 +32,7 @@ function HomeScreen(e) {
           //     )}}
               />
               
-      {/* <Drawer.Screen 
+      <Drawer.Screen 
           name="Favoritos" 
           component={Favoritos} 
           // options={{ 
@@ -63,7 +55,7 @@ function HomeScreen(e) {
           //     drawerIcon:({color})=>(
           //       <AntDesign name="linechart" size={24} color={color} />
           // )}}
-          /> */}
+          />
     </Drawer.Navigator>
     
     );
