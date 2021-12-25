@@ -4,12 +4,13 @@ import { NavigationContainer  } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Provider, useSelector,useDispatch } from 'react-redux';
-// import HomeScreen from './views/index'
+import HomeScreen from './views/index'
 import RegisterScreen from './views/Register/register1'
 import Register2Screen from './views/Register/register2'
 import Register3Screen from './views/Register/register3'
 
 import store from './store'
+import { login } from './actions/auth'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -21,7 +22,7 @@ const Stack_Register = createNativeStackNavigator();
 const HomeScreens = () => {
   return (
     <Stack_Home.Navigator>
-      <Stack_Home.Screen name="Home2" component={RegisterScreen} options={{ headerShown: false }} />
+      <Stack_Home.Screen name="Home2" component={HomeScreen} options={{ headerShown: false }} />
       {/* <Stack_Home.Screen name="Inicio" component={Timer} options={{ headerShown: false }} />
       <Stack_Home.Screen name="settings" component={Settings} options={{ headerShown: false }} /> */}
     </Stack_Home.Navigator>
