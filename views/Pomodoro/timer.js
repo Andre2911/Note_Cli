@@ -1,81 +1,84 @@
-import React, {useRef, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import { View, StyleSheet, Text,TouchableOpacity, Button } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Circle from './circle';
-import TimerText from './components/date'
 import BackgroundTimer from "react-native-background-timer";
+import { useDispatch, useSelector } from 'react-redux';
+import {retrieveSettings} from '../../actions/settings';
 
 export const Timer = ({...e}) => {
 
     const [metodo, setMetodo] = React.useState({metodo: "Pomodoro"});
     const [status, setStatus] = React.useState(false);
     const [progress, setProgress] = React.useState(0);
-    const [second, setState] = React.useState(0);
-    const time = 5
+    const [secondsLeft, setSecondsLeft] = useState(30);
+    const [timerOn, setTimerOn] = useState(false);
+    const dispatch = useDispatch()
 
-    let interval;
+    const settings = useSelector(state => state.settings[0]);
+    const {time, short, strictmode, auto} = settings;
+    console.log(settings)
 
     useEffect(() => {
 
-    },[status])
+        if (timerOn) startTimer();
+        else BackgroundTimer.stopBackgroundTimer();
+        return () => {
+          BackgroundTimer.stopBackgroundTimer();
+        };
+      }, [timerOn]);
 
-    const onStart = () => {
-        interval = BackgroundTimer.setInterval(() => {
-            this.setState(second + 1
-            )
-          }, 1000);
-        }
+    useEffect(() => {
+        setProgress(100*secondsLeft/time);
+        if (secondsLeft === 0) BackgroundTimer.stopBackgroundTimer()
+      }, [secondsLeft])
     
-    const onPause = () => {
-            BackgroundTimer.clearInterval(this._interval);
-          }
-
-    const onReset = () => {
-    this.setState(0)
-    BackgroundTimer.clearInterval(this._interval);
-    }
-
-    const renderStartButton = () => {
-        return (
-          <Button 
-            title="Start"
-            onPress={onStart}
-          />
-        )
+    useEffect(() => {
+        dispatch(retrieveSettings())
+    },[dispatch])
+    useEffect(() => {
+        setSecondsLeft(time)
+    },[])
+    
+      const startTimer = () => {
+        BackgroundTimer.runBackgroundTimer(() => {
+          setSecondsLeft(secs => {
+            if (secs > 0) return secs - 1
+            else return 0
+          })
+        }, 1000)
       }
 
-     const renderPauseButton = () => {
-        return (
-          <Button 
-            title="Pause"
-            onPress={onPause}
-        />
-        )
-      }
-
-     const  renderResetButton = () => {
-        return (
-          <Button 
-            title="Reset"
-            onPress={onReset}
-        />
-        )
-      }
-    const handlePressStart = () => {
-        switch(metodo){
-            case "Pomodoro":
-
-                break;
-            case "Temporizador":
-
-                break;
-            case "Cronómetro":
-
-                break;
-            default:
-                break;
+    const clockify = () => {
+        let hours = Math.floor(secondsLeft / 60 / 60)
+        let mins = Math.floor((secondsLeft / 60) % 60)
+        let seconds = Math.floor(secondsLeft % 60)
+        let displayHours = hours < 10 ? `0${hours}` : hours
+        let displayMins = mins < 10 ? `0${mins}` : mins
+        let displaySecs = seconds < 10 ? `0${seconds}` : seconds
+        return {
+          displayHours,
+          displayMins,
+          displaySecs,
         }
-        setStatus(prev=>!prev)
+      }
+    
+    const HandlePressTemp = () => {
+        setProgress(100)
+        setMetodo({metodo: "Temporizador"})
+    }
+    const HandlePressCrono = () => {
+        setMetodo({metodo: "Cronómetro"})
+        setProgress(0)
+    }
+    const HandlePressPomodoro = () => {
+        setMetodo({metodo: "Pomodoro"})
+        setProgress(0)
+    }
+    const handlePressStart = () => {
+        setTimerOn(timerOn => !timerOn)
+        setStatus(status => !status)
+        // setStatus(prev=>!prev)
     }
     return(
         <View style={styles.container}>
@@ -91,12 +94,11 @@ export const Timer = ({...e}) => {
             <Text style={styles.tarea}>{e.route.params.extraData}</Text>
             <View style={{alignItems: 'center', justifyContent: 'center', marginTop:23}}>
                 <View style={{position:'absolute'}}>
-                    {!status ? 
-                    <Text style={styles.time_text}>{second}</Text>
-                    // <Text style={styles.time_text}>{'as'}</Text>
-                    :
-                    <TimerText seconds={time}/>
-                    }
+
+                    <Text style={styles.time_text}>
+                    {clockify().displayHours} : {clockify().displayMins} {": "}
+                    {clockify().displaySecs}</Text>
+
                 
                 
                 </View>
@@ -107,18 +109,15 @@ export const Timer = ({...e}) => {
                 <Text style={styles.text}>{status ? 'Parar':'Comenzar'}</Text>
             </TouchableOpacity>
             <View style={styles.container_footer}>
-                <TouchableOpacity onPress={()=>setMetodo({metodo: "Pomodoro"})} >
+                <TouchableOpacity onPress={()=>HandlePressPomodoro()} >
                     <MaterialIcons name="timer" size={20} color="white" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>setMetodo({metodo: "Temporizador"})}>
+                <TouchableOpacity onPress={()=>HandlePressTemp()}>
                 <MaterialIcons name="history" size={20} color="white" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>setMetodo({metodo: "Cronómetro"})}>
+                <TouchableOpacity onPress={()=>HandlePressCrono()}>
                 <MaterialIcons name="update" size={20} color="white"/>
                 </TouchableOpacity>
-                {/* {renderStartButton()}
-          {renderPauseButton()}
-          {renderResetButton()} */}
             </View>
         </View>
     )

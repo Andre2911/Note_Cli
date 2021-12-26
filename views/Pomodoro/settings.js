@@ -1,12 +1,35 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet, TouchableOpacity, Text,Switch } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {retrieveSettings, updateSettings} from '../../actions/settings';
 
 export const Settings = (e) => {
     const [isEnabled, setIsEnabled] = React.useState(false);
     const [isEnabled2, setIsEnabled2] = React.useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const toggleSwitch2 = () => setIsEnabled2(previousState => !previousState);
+    const dispatch = useDispatch();
+
+    const settings = useSelector(state => state.settings);
+    const {time, short, strictmode, auto} = settings[0];
+    console.log(settings)
+
+    useEffect(() => {
+        dispatch(retrieveSettings())
+        setIsEnabled(auto)
+        setIsEnabled2(strictmode)
+    },[dispatch, auto])
+
+    const secondsToString = (seconds) =>{
+        var hour = Math.floor(seconds / 3600);
+        hour = (hour < 10)? '0' + hour : hour;
+        var minute = Math.floor((seconds / 60) % 60);
+        minute = (minute < 10)? '0' + minute : minute;
+        var second = seconds % 60;
+        second = (second < 10)? '0' + second : second;
+        return hour + ':' + minute + ':' + second;
+      }
     return(
         <View style={styles.container}>
             <View style={styles.container_header}>
@@ -19,11 +42,11 @@ export const Settings = (e) => {
             <View style={styles.container_body}>
                 <View style={styles.container_body_item}>
                     <Text style={styles.title_item}>Tiempo de Enfoque</Text>
-                    <Text style={styles.title_item}>25min</Text>
+                    <Text style={styles.title_item}>{secondsToString(time)}</Text>
                 </View>
                 <View style={styles.container_body_item}>
                     <Text style={styles.title_item}>Tiempo de descanso</Text>
-                    <Text style={styles.title_item}>5min</Text>
+                    <Text style={styles.title_item}>{secondsToString(short)}</Text>
                 </View>
                 <View style={[styles.container_body_item,{alignItems: 'center'}]}>
                     <Text style={styles.title_item}>Modo Automático</Text>
