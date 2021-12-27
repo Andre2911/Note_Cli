@@ -5,8 +5,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NewCategory from '../Categorias/NewCategory'
 
 const Task = (e,item) => {
+    // console.log(item,"item")
+    // console.log({id: item.id,extraData: item.name, status: item.status, categoria: e.extraData},"itemsxdxd")
     return(
-        <TouchableOpacity activeOpacity={1} key={item} onPress={()=>e.navigation.navigate('Inicio',{extraData: item.name})}>
+        <TouchableOpacity activeOpacity={1} key={item} onPress={()=>e.navigation.navigate('Inicio',{id: item.id,extraData: item.name, status: item.status, categoria: e.extraData})}>
             <Text style={styles.item}>• {item.name}</Text>
         </TouchableOpacity>
     )
@@ -19,6 +21,7 @@ export const Categoria = (e) => {
     const [search, setSearch] = useState([])
     const [ tareas, setTareas ] = useState([])
 
+    // console.log(tareas, "listado de tareas de categorias")
     const retrieveTareas = async (categoria) => {
         const result = await AsyncStorage.getItem(`categoria-${categoria}`);
         const parseResult= result === null ? [] : JSON.parse(result)
@@ -47,7 +50,8 @@ export const Categoria = (e) => {
       }
 
     const CloseModal = (data) => {
-        tareas.push({name: data})
+        console.log(data,"data")
+        tareas.push({id: data.id, name: data.name, status: false, time: 0, mode: "Pomodoro"})
         setModalVisible(!modalVisible)
       }
     const longitud = number == "" ? tareas.length : search.length

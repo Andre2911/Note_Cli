@@ -9,6 +9,7 @@ const NewCategory = ({close, actividad, categoria}) => {
   const [number, onChangeNumber] = React.useState(null);
   
   const dispatch = useDispatch();
+  const fecha = Date.now();
 
   const creandoCategoria = async () => {
     if (number == null) {
@@ -16,8 +17,8 @@ const NewCategory = ({close, actividad, categoria}) => {
     }else{
       switch(actividad){
         case 'Tarea':
-          dispatch(createTarea(number, categoria))
-          close(number)
+          dispatch(createTarea(number, categoria, fecha))
+          close({id: fecha,name: number, status: false, time: 0, mode: "Pomodoro"})
           break;
         case 'Categoría':
           dispatch(createCategoria(number, getRandomColor()))

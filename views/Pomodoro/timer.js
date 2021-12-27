@@ -1,23 +1,27 @@
 import React, {useState, useEffect} from 'react'
-import { View, StyleSheet, Text,TouchableOpacity, Button } from 'react-native'
+import { View, StyleSheet, Text,TouchableOpacity, Button, StatusBar } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Circle from './circle';
 import BackgroundTimer from "react-native-background-timer";
 import { useDispatch, useSelector } from 'react-redux';
 import {retrieveSettings} from '../../actions/settings';
+import {updateTarea, retrieveTarea} from '../../actions/tareas';
 
 export const Timer = ({...e}) => {
 
+    const datos = e.route.params
     const [metodo, setMetodo] = React.useState({metodo: "Pomodoro"});
     const [status, setStatus] = React.useState(false);
+    const [data, setData] = React.useState({});
+    const [started, setStarted] = React.useState(datos.status);
     const [progress, setProgress] = React.useState(0);
     const [secondsLeft, setSecondsLeft] = useState(30);
     const [timerOn, setTimerOn] = useState(false);
+    
     const dispatch = useDispatch()
-
+    // console.log(datos)
     const settings = useSelector(state => state.settings[0]);
     const {time, short, strictmode, auto} = settings;
-    console.log(settings)
 
     useEffect(() => {
 
@@ -35,6 +39,8 @@ export const Timer = ({...e}) => {
     
     useEffect(() => {
         dispatch(retrieveSettings())
+        dispatch(retrieveTarea(datos.categoria, datos.id))
+        .then((ea)=>setData(ea))
     },[dispatch])
     useEffect(() => {
         setSecondsLeft(time)
@@ -77,11 +83,30 @@ export const Timer = ({...e}) => {
     }
     const handlePressStart = () => {
         setTimerOn(timerOn => !timerOn)
-        setStatus(status => !status)
+        setStatus(true)
+        const actualizar_tarea = {
+            id: datos.id,
+            name: datos.extraData,
+            categoria: datos.categoria,
+            status: true,
+            mode: metodo.metodo,
+            time: metodo.time
+        }
+        console.log(actualizar_tarea,"datos enviados a actions")
+        dispatch(updateTarea(actualizar_tarea))
+        dispatch(retrieveTarea(datos.categoria, datos.id))
+        data.status = true
         // setStatus(prev=>!prev)
     }
+    const handlePressStatus = () => {
+        setTimerOn(timerOn => !timerOn)
+        setStatus(a => !a)
+    }
+    console.log(datos, "datos enviados a timer")
+    console.log(data, "data redux")
     return(
         <View style={styles.container}>
+            <StatusBar barStyle="light-content" />
             <View style={styles.container_header}>
                 <TouchableOpacity onPress={()=>e.navigation.goBack()}>
                     <MaterialIcons name="close" size={20} color="white" />
@@ -91,12 +116,12 @@ export const Timer = ({...e}) => {
                     <MaterialIcons name="settings" size={20} color="white" />
                 </TouchableOpacity>
             </View>
-            <Text style={styles.tarea}>{e.route.params.extraData}</Text>
+            <Text style={styles.tarea}>{datos.extraData}</Text>
             <View style={{alignItems: 'center', justifyContent: 'center', marginTop:23}}>
                 <View style={{position:'absolute'}}>
 
                     <Text style={styles.time_text}>
-                    {clockify().displayHours} : {clockify().displayMins} {": "}
+                    {clockify().displayHours} :{clockify().displayMins} {" : "}
                     {clockify().displaySecs}</Text>
 
                 
@@ -105,9 +130,18 @@ export const Timer = ({...e}) => {
                 <Circle
                     progress={progress}/>
             </View>
-            <TouchableOpacity style={styles.button} onPress={()=>handlePressStart()}>
-                <Text style={styles.text}>{status ? 'Parar':'Comenzar'}</Text>
+            {data.status || datos.status ?
+            <TouchableOpacity style={styles.button} onPress={()=>handlePressStatus()}>
+                <Text style={styles.text}>{status ? 'Parar':'Continuar'}</Text>
             </TouchableOpacity>
+            :
+            <TouchableOpacity style={styles.button} onPress={()=>handlePressStart()}>
+                <Text style={styles.text}>Comenzar</Text>
+            </TouchableOpacity>
+            }
+            {data.status ? 
+            <></>
+            :
             <View style={styles.container_footer}>
                 <TouchableOpacity onPress={()=>HandlePressPomodoro()} >
                     <MaterialIcons name="timer" size={20} color="white" />
@@ -119,6 +153,7 @@ export const Timer = ({...e}) => {
                 <MaterialIcons name="update" size={20} color="white"/>
                 </TouchableOpacity>
             </View>
+            }
         </View>
     )
 }

@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const retrieveCategorias = () => async (dispatch) => {
   try {
     const result = await AsyncStorage.getItem('categoria');
-    const parseResult = result === null ? [{name: "Sin Categoria"}] : JSON.parse(result)
+    const parseResult = result === null ? [{name: "Sin Categoria", color:"red"}] : JSON.parse(result)
     // console.log(result, "actions")
 
     dispatch({
@@ -15,7 +15,7 @@ export const retrieveCategorias = () => async (dispatch) => {
       payload: parseResult,
     });
   } catch (err) {
-    console.log(err,"here********************");
+    console.log(err,"action categorias*");
   }
 };
 

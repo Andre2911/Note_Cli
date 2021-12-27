@@ -1,5 +1,6 @@
 import { 
     RETRIEVE_TAREAS,
+    RETRIEVE_TAREA,
     DELETE_TAREA,
     CREATE_TAREA,
     UPDATE_TAREA,
@@ -16,10 +17,12 @@ const tareasReducer =  (state = initialstate, action) => {
             return payload;
         case RETRIEVE_TAREAS:
             return payload;
+        case RETRIEVE_TAREA:
+            return payload.find(n => n.id === action.n);
         case DELETE_TAREA:
             return state.filter(tarea => tarea.id !== payload.id);
         case UPDATE_TAREA:
-            return state.map(tarea => tarea.id === payload.id ? payload : tarea);
+            return payload;
         default:
             return state;
     }
