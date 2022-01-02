@@ -45,9 +45,7 @@ export const RenderContent = (props) => {
       dispatch(retrieveCategorias())
       setModalVisible(!modalVisible)
     }
-    const borrar = async () => {
-      await AsyncStorage.clear()
-    }
+
     return (
       <View style={styles.container}>
         <Modal
@@ -73,9 +71,6 @@ export const RenderContent = (props) => {
             </TouchableOpacity>
             
         </View>
-        {/* <TouchableOpacity style={styles.container_icon} onPress={() => borrar()}>
-        <MaterialIcons name="note-add" size={20} color="#fff" />
-            </TouchableOpacity> */}
         <SafeAreaView style={styles.container_categories_body}>
             <ScrollView
                 horizontal={true}

@@ -22,15 +22,10 @@ import {
   };
   export const retrieveTarea = (categoria,id) => async (dispatch) => {
     try {
-      // console.log(categoria, id)
+
       const result = await AsyncStorage.getItem(`categoria-${categoria}`);
       const parseResult = result === null ? [] : JSON.parse(result)
-      return parseResult.find(b => b.id === id);
-      // console.log(edit,"action retrieve tarea")
-      // dispatch({
-      //   type: RETRIEVE_TAREA,
-      //   payload: parseResult,
-      // });
+      return parseResult.find(b => b.id == id);
     } catch (err) {
       console.log(err,"ACTION_TAREAS");
     }

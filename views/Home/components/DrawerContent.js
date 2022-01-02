@@ -21,7 +21,7 @@ export function DrawerContent(props) {
   
     },[])
     const HandlePressLogout = async () => {
-      await AsyncStorage.removeItem('@User')
+      await AsyncStorage.clear()
       dispatch(logout());
     }
 

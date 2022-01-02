@@ -1,25 +1,26 @@
 import React, {useState, useEffect} from 'react'
-import { View, StyleSheet, Text,TouchableOpacity, Button, StatusBar } from 'react-native'
+import { View, StyleSheet, Text,TouchableOpacity, BackHandler, StatusBar, Alert } from 'react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Circle from './circle';
 import BackgroundTimer from "react-native-background-timer";
 import { useDispatch, useSelector } from 'react-redux';
 import {retrieveSettings} from '../../actions/settings';
 import {updateTarea, retrieveTarea} from '../../actions/tareas';
+import { tarea_update_time } from '../../actions/time_history';
 
 export const Timer = ({...e}) => {
 
     const datos = e.route.params
     const [metodo, setMetodo] = React.useState({metodo: "Pomodoro"});
     const [status, setStatus] = React.useState(false);
-    const [data, setData] = React.useState({});
+    const [data, setData] = React.useState({status: true});
     const [started, setStarted] = React.useState(datos.status);
     const [progress, setProgress] = React.useState(0);
     const [secondsLeft, setSecondsLeft] = useState(30);
     const [timerOn, setTimerOn] = useState(false);
     
     const dispatch = useDispatch()
-    // console.log(datos)
+    console.log(data, "dataaaaaaa")
     const settings = useSelector(state => state.settings[0]);
     const {time, short, strictmode, auto} = settings;
 
@@ -40,12 +41,37 @@ export const Timer = ({...e}) => {
     useEffect(() => {
         dispatch(retrieveSettings())
         dispatch(retrieveTarea(datos.categoria, datos.id))
-        .then((ea)=>setData(ea))
+        .then((ea)=>{
+            console.log(ea, "useEffect")
+            setData(ea)})
     },[dispatch])
     useEffect(() => {
         setSecondsLeft(time)
     },[])
     
+    useEffect(() => {
+        const backAction = () => {
+          Alert.alert("Choto mate, seguro que quieres salir :´v?", [
+            {
+              text: "Cancel",
+              onPress: () => null,
+              style: "cancel"
+            },
+            { text: "YES", onPress: () => handlePressEnd }
+          ]);
+          return true;
+        };
+        if (status===true){
+            const backHandler = BackHandler.addEventListener(
+                "hardwareBackPress",
+                backAction
+              );
+              return () => backHandler.remove();
+        }
+
+      }, [status]);
+
+
       const startTimer = () => {
         BackgroundTimer.runBackgroundTimer(() => {
           setSecondsLeft(secs => {
@@ -96,14 +122,23 @@ export const Timer = ({...e}) => {
         dispatch(updateTarea(actualizar_tarea))
         dispatch(retrieveTarea(datos.categoria, datos.id))
         data.status = true
-        // setStatus(prev=>!prev)
     }
     const handlePressStatus = () => {
         setTimerOn(timerOn => !timerOn)
         setStatus(a => !a)
     }
-    console.log(datos, "datos enviados a timer")
-    console.log(data, "data redux")
+    const handlePressEnd = () => {
+        const tiempo = time - secondsLeft
+        const f = new Date()
+        const fecha = new Date(f.getFullYear(), f.getMonth(), f.getDate())
+        dispatch(tarea_update_time(datos.id,tiempo,datos.extraData, datos.categoria,fecha ))
+        // e.navigation.goBack()
+    }
+    const fin_tarea = () => {
+        
+    }
+    // console.log(datos, "datos enviados a timer")
+    // console.log(data, "data redux")
     return(
         <View style={styles.container}>
             <StatusBar barStyle="light-content" />
@@ -112,9 +147,13 @@ export const Timer = ({...e}) => {
                     <MaterialIcons name="close" size={20} color="white" />
                 </TouchableOpacity>
                 <Text style={styles.title}>{metodo.metodo}</Text>
+
                 <TouchableOpacity onPress={()=>e.navigation.navigate('settings')}>
+                    {!status && 
                     <MaterialIcons name="settings" size={20} color="white" />
+                    }
                 </TouchableOpacity>
+                      
             </View>
             <Text style={styles.tarea}>{datos.extraData}</Text>
             <View style={{alignItems: 'center', justifyContent: 'center', marginTop:23}}>
@@ -124,16 +163,29 @@ export const Timer = ({...e}) => {
                     {clockify().displayHours} :{clockify().displayMins} {" : "}
                     {clockify().displaySecs}</Text>
 
-                
-                
                 </View>
                 <Circle
                     progress={progress}/>
             </View>
             {data.status || datos.status ?
+            /////
+            status ?
             <TouchableOpacity style={styles.button} onPress={()=>handlePressStatus()}>
-                <Text style={styles.text}>{status ? 'Parar':'Continuar'}</Text>
+                <Text style={styles.text}>Parar</Text>
             </TouchableOpacity>
+            :
+            <View style={styles.continuar_s}>
+                <TouchableOpacity style={[styles.button,{marginTop:110}]} onPress={()=>handlePressStatus()}>
+                    <Text style={styles.text}>Continuar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button,{marginTop:20, width:150}]} onPress={()=>handlePressEnd()}>
+                <Text style={styles.text}>Continuar más Tarde</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button,{marginTop:20, width:150}]} onPress={()=>fin_tarea()}>
+                <Text style={styles.text}>Finalizar</Text>
+                </TouchableOpacity>
+            </View>
+            /////
             :
             <TouchableOpacity style={styles.button} onPress={()=>handlePressStart()}>
                 <Text style={styles.text}>Comenzar</Text>
@@ -204,5 +256,10 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         fontSize: 30,
+    },
+    continuar_s: {
+        bottom: 25,
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 })
