@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, Text, View, Dimensions,TouchableOpacity, TextInput,FlatList, Modal, Alert, Pressable} from 'react-native';
+import { StyleSheet, Text, View, Dimensions,TouchableOpacity, TextInput,FlatList, Modal, Alert, Pressable, StatusBar} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NewCategory from '../Categorias/NewCategory'
@@ -30,6 +30,7 @@ export const Categoria = (e) => {
     }
 
     useEffect(() => {
+        console.log("useEffect")
         retrieveTareas(e.extraData)
         .then(() =>
             filterList(tareas)
@@ -58,8 +59,10 @@ export const Categoria = (e) => {
     if(tareas.lenght===0){
         retrieveTareas(e.extraData)
     }
+    console.log(tareas)
     return(
         <View style={styles.container}>
+            <StatusBar barStyle="light-content"/>
             <Modal
                 animationType="slide"
                 transparent={true}

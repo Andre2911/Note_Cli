@@ -28,7 +28,7 @@ const App = (e) => {
   
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <ReactNativeParallaxHeader
         headerMinHeight={HEADER_HEIGHT}
         headerMaxHeight={180}

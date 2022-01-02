@@ -20,7 +20,7 @@ export const Timer = ({...e}) => {
     const [timerOn, setTimerOn] = useState(false);
     
     const dispatch = useDispatch()
-    console.log(data, "dataaaaaaa")
+    // console.log(data, "dataaaaaaa")
     const settings = useSelector(state => state.settings[0]);
     const {time, short, strictmode, auto} = settings;
 
@@ -132,7 +132,8 @@ export const Timer = ({...e}) => {
         const f = new Date()
         const fecha = new Date(f.getFullYear(), f.getMonth(), f.getDate())
         dispatch(tarea_update_time(datos.id,tiempo,datos.extraData, datos.categoria,fecha ))
-        // e.navigation.goBack()
+        e.navigation.push("Categorie",{titulo: datos.categoria})
+        e.navigation.navigate("Categorie",{titulo: datos.categoria})
     }
     const fin_tarea = () => {
         
