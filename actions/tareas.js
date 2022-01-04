@@ -82,7 +82,7 @@ import {
         edit.name = name
         edit.status = status
         edit.mode = mode
-        edit.time = time
+        edit.time = edit.time +time
     console.log(parseResult,"PARSE")
     await AsyncStorage.setItem(`categoria-${categoria}`, JSON.stringify(parseResult))
     console.log(parseResult,"filtrado")
@@ -98,8 +98,8 @@ import {
   }
   export const eliminar_tarea = (id, categoria) =>async (dispatch) => {
     const result = await AsyncStorage.getItem(`categoria-${categoria}`);
-    const result_hecho = await AsyncStorage.getItem(`hechas-${categoria}`);
     const parseResult = result === null ? [] : JSON.parse(result)
+    console.log(parseResult,"action tarea delete line 102")
     var edit = parseResult.filter(b => b.id != id);
     await AsyncStorage.setItem(`categoria-${categoria}`, JSON.stringify(edit))
     try{

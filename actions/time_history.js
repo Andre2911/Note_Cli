@@ -26,7 +26,6 @@ export const tarea_update_time = (id, tiempo, nombre, categoria, dia) => async(d
     const parseResult = result === null ? [] : JSON.parse(result)
     const data = [{[dia]:[{id: id, tiempo:tiempo, nombre: nombre, categoria: categoria, }]}]
     const data2 = {[dia]:[{id: id, tiempo:tiempo, nombre: nombre, categoria: categoria}]}
-    var tiempo_total = 0
 
     const fech = parseResult.some((a)=> {
         return new Date(Object.keys(a)[0]).getTime() == new Date(dia.getFullYear(), dia.getMonth(), dia.getDate()).getTime()
@@ -72,12 +71,11 @@ export const tarea_update_time = (id, tiempo, nombre, categoria, dia) => async(d
             // console.log(DA,"DA95")
             if (fechas_incluidas.includes(id)){
                 console.log("si esta en la lista")
-                console.log(DA[key].find(a=>{
-                    console.log(id,"idicito",a.id)
-                    return a.id==id}),"line 97 timehostory")
+                console.log(DA[key].find(a=>a.id == id).tiempo,"dadr")
                 try{
                     DA[key].find(a=>a.id == id).tiempo = DA[key].find(a=>a.id == id).tiempo+tiempo
-                    tiempo_total = DA[key].find(a=>a.id == id).tiempo
+                    
+
                     // console.log(parseResult,"line 101 timehostory")
                     console.log(parseResult,"line 82")
                     await AsyncStorage.setItem(`tiempo-${categoria}`, JSON.stringify(parseResult))
@@ -111,5 +109,5 @@ export const tarea_update_time = (id, tiempo, nombre, categoria, dia) => async(d
             })
         }
         }
-    // return tiempo_total
+
 }   

@@ -31,6 +31,7 @@ export const Categoria = (e) => {
         setTareas(parseResult)
     }
     const tareasxd = useSelector(state => state.tareas)
+    console.log(tareasxd)
 
     useEffect(() => {
         dispatch(retrieveTareas(e.extraData))

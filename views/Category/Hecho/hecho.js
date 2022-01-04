@@ -1,30 +1,66 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { StyleSheet, Text, View, Dimensions, TextInput,FlatList} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { retrieve_tareas_completadas } from '../../../actions/tareas_completadas';
 
 const Task = (item) => {
+
+    const secondsToString = (seconds)=> {
+        var hour = Math.floor(seconds / 3600);
+        hour = (hour < 10)? '0' + hour : hour;
+        var minute = Math.floor((seconds / 60) % 60);
+        if (hour == 0) return minute + " min"
+        else return hour + ' h ' + minute + "min"
+      }
     return(
         <View style={styles.container_task_check}>
             <Text style={styles.item}>• {item.name}</Text>
-            <Text style={styles.item_time}>{item.tiempo}</Text>
+            <Text style={styles.item_time}>{secondsToString(item.time)}</Text>
         </View>
         
     )
 }
 
 export const Hecho = (e) => {
-    const [number, onChangeNumber] = React.useState(null);
+    const [number, onChangeNumber] = React.useState("");
+    const [search, setSearch] = useState([])
+    const [ tareas, setTareas ] = useState([])
 
     const dispatch = useDispatch();
 
-    const tareas = useSelector(state => state.tareas_completadas);
-    console.log(tareas, "tareas hechas papu")
+    const tareas2 = useSelector(state => state.tareas_completadas);
+    console.log(tareas2, "tareas hechas papu")
+    const retrieveTareas2 = async (categoria) => {
+        const result = await AsyncStorage.getItem(`hechas-${categoria}`);
+        const parseResult= result === null ? [] : JSON.parse(result)
+        setTareas(parseResult)
+    }
     useEffect(() => {
         dispatch(retrieve_tareas_completadas(e.extraData))
-    },[dispatch])
+        retrieveTareas2(e.extraData)
+        .then(() =>
+        // console.log(tareas,"line 35")
+            filterList(tareas)
+        )
+    },[dispatch, number])
 
+    const filterList = (tarea) => {
+        const data = tarea.filter(
+                    (listItem) =>            
+                        listItem.name
+                        .toLowerCase()
+                        .includes(number.toLowerCase()
+                        )
+                    )
+        setSearch(data)
+      }
+      const longitud = number == "" ? tareas2.length : search.length
+      if(tareas.lenght===0){
+          retrieveTareas2(e.extraData)
+      }
+
+    console.log(tareas2,"line 53")
     return(
         <View style={styles.container}>
             <Text style={styles.text}>Realizado - {e.extraData}</Text>
@@ -37,12 +73,16 @@ export const Hecho = (e) => {
                     placeholder="Buscar Tareas Realizadas"
                     placeholderTextColor="#7a7a7a" />
             </View>
-            <Text style={styles.number_tareas}>5 Tareas Hechas</Text>
+            <Text style={styles.number_tareas}>{longitud} Tareas Hechas</Text>
             <View style={styles.container_tareas}>
+            { tareas.length !== 0 ? 
                 <FlatList
-                    data={tareas}
+                    data={number ==="" ? tareas2 : search}
                     renderItem={({item}) => Task(item)}
                 />
+                :
+                    <Text style={styles.text_empty}>No hay tareas</Text>
+                }
             </View>
         </View>
     )

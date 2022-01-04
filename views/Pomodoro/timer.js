@@ -12,7 +12,7 @@ import { eliminar_tarea_completada } from '../../actions/tareas_completadas';
 export const Timer = ({...e}) => {
 
     const datos = e.route.params
-    const [metodo, setMetodo] = React.useState({metodo: "Pomodoro"});
+    const [metodo, setMetodo] = React.useState({metodo: "Pomodoro", time: 0});
     const [status, setStatus] = React.useState(false);
     const [data, setData] = React.useState({status: true});
     const [started, setStarted] = React.useState(datos.status);
@@ -24,6 +24,9 @@ export const Timer = ({...e}) => {
     // console.log(data, "dataaaaaaa")
     const settings = useSelector(state => state.settings[0]);
     const {time, short, strictmode, auto} = settings;
+    const tiempo = time - secondsLeft
+    const f = new Date()
+    const fecha = new Date(f.getFullYear(), f.getMonth(), f.getDate())
 
     useEffect(() => {
 
@@ -130,26 +133,39 @@ export const Timer = ({...e}) => {
     }
 
     const handlePressEnd = () => {
-        const tiempo = time - secondsLeft
-        const f = new Date()
-        const fecha = new Date(f.getFullYear(), f.getMonth(), f.getDate())
+        const actualizar_tarea = {
+            id: datos.id,
+            name: datos.extraData,
+            categoria: datos.categoria,
+            status: true,
+            mode: metodo.metodo,
+            time: tiempo
+        }
+        dispatch(updateTarea(actualizar_tarea))
         dispatch(tarea_update_time(datos.id,tiempo,datos.extraData, datos.categoria,fecha ))
         e.navigation.navigate("Categorie",{titulo: datos.categoria})
     }
 
 
     const fin_tarea = () => {
-        const tiempo = time - secondsLeft
-        const f = new Date()
-        const fecha = new Date(f.getFullYear(), f.getMonth(), f.getDate())
-        dispatch(tarea_update_time(datos.id,tiempo,datos.extraData, datos.categoria,fecha ))
-        .then((tiempo_total) =>{
-            console.log(tiempo_total,"tiempo totallll")
-        })
-        dispatch(eliminar_tarea(datos.id, datos.categoria))
+        const actualizar_tarea = {
+            id: datos.id,
+            name: datos.extraData,
+            categoria: datos.categoria,
+            status: true,
+            mode: metodo.metodo,
+            time: tiempo
+        }
+        dispatch(updateTarea(actualizar_tarea)).
+        then(() => {
+            dispatch(eliminar_tarea(datos.id, datos.categoria))
         .then((es)=>{
             dispatch(eliminar_tarea_completada(datos.categoria, es))
         })
+        })
+        dispatch(tarea_update_time(datos.id,tiempo,datos.extraData, datos.categoria,fecha ))
+
+        
         // dispatch()
         e.navigation.navigate("Categorie",{titulo: datos.categoria})
     }

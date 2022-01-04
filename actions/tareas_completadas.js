@@ -29,6 +29,7 @@ export const eliminar_tarea_completada = (categoria,data) => async(dispatch)=> {
         create = [...parseResult2, data[0]];
         await AsyncStorage.setItem(`hechas-${categoria}`, JSON.stringify(create))
       }
+    console.log(create,"tareas action hechas")
     try{
         dispatch({
           type: DELETE_TAREA_COMPLETADA,
