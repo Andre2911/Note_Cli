@@ -5,8 +5,9 @@ import Circle from './circle';
 import BackgroundTimer from "react-native-background-timer";
 import { useDispatch, useSelector } from 'react-redux';
 import {retrieveSettings} from '../../actions/settings';
-import {updateTarea, retrieveTarea} from '../../actions/tareas';
+import {updateTarea, retrieveTarea,eliminar_tarea} from '../../actions/tareas';
 import { tarea_update_time } from '../../actions/time_history';
+import { eliminar_tarea_completada } from '../../actions/tareas_completadas';
 
 export const Timer = ({...e}) => {
 
@@ -127,19 +128,32 @@ export const Timer = ({...e}) => {
         setTimerOn(timerOn => !timerOn)
         setStatus(a => !a)
     }
+
     const handlePressEnd = () => {
         const tiempo = time - secondsLeft
         const f = new Date()
         const fecha = new Date(f.getFullYear(), f.getMonth(), f.getDate())
         dispatch(tarea_update_time(datos.id,tiempo,datos.extraData, datos.categoria,fecha ))
-        e.navigation.push("Categorie",{titulo: datos.categoria})
         e.navigation.navigate("Categorie",{titulo: datos.categoria})
     }
+
+
     const fin_tarea = () => {
-        
+        const tiempo = time - secondsLeft
+        const f = new Date()
+        const fecha = new Date(f.getFullYear(), f.getMonth(), f.getDate())
+        dispatch(tarea_update_time(datos.id,tiempo,datos.extraData, datos.categoria,fecha ))
+        .then((tiempo_total) =>{
+            console.log(tiempo_total,"tiempo totallll")
+        })
+        dispatch(eliminar_tarea(datos.id, datos.categoria))
+        .then((es)=>{
+            dispatch(eliminar_tarea_completada(datos.categoria, es))
+        })
+        // dispatch()
+        e.navigation.navigate("Categorie",{titulo: datos.categoria})
     }
-    // console.log(datos, "datos enviados a timer")
-    // console.log(data, "data redux")
+
     return(
         <View style={styles.container}>
             <StatusBar barStyle="light-content" />

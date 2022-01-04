@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import { StyleSheet, Text, View, Dimensions,TouchableOpacity, TextInput,FlatList, Modal, Alert, Pressable, StatusBar} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NewCategory from '../Categorias/NewCategory'
+import {retrieveTareas }from '../../../actions/tareas'; 
 
 const Task = (e,item) => {
     // console.log(item,"item")
@@ -21,22 +23,23 @@ export const Categoria = (e) => {
     const [search, setSearch] = useState([])
     const [ tareas, setTareas ] = useState([])
 
-    // console.log(tareas, "listado de tareas de categorias")
-    const retrieveTareas = async (categoria) => {
+    const dispatch = useDispatch()
+    const retrieveTareas2 = async (categoria) => {
         const result = await AsyncStorage.getItem(`categoria-${categoria}`);
         const parseResult= result === null ? [] : JSON.parse(result)
         // console.log(parseResult,"parseResult")
         setTareas(parseResult)
     }
+    const tareasxd = useSelector(state => state.tareas)
 
     useEffect(() => {
-        console.log("useEffect")
-        retrieveTareas(e.extraData)
+        dispatch(retrieveTareas(e.extraData))
+        retrieveTareas2(e.extraData)
         .then(() =>
             filterList(tareas)
         )
         
-    },[number])
+    },[number, dispatch])
 
     
 
@@ -53,11 +56,12 @@ export const Categoria = (e) => {
     const CloseModal = (data) => {
         console.log(data,"data")
         tareas.push({id: data.id, name: data.name, status: false, time: 0, mode: "Pomodoro"})
+        tareasxd.push({id: data.id, name: data.name, status: false, time: 0, mode: "Pomodoro"})
         setModalVisible(!modalVisible)
       }
-    const longitud = number == "" ? tareas.length : search.length
+    const longitud = number == "" ? tareasxd.length : search.length
     if(tareas.lenght===0){
-        retrieveTareas(e.extraData)
+        retrieveTareas2(e.extraData)
     }
     // console.log(tareas)
     return(
@@ -91,7 +95,7 @@ export const Categoria = (e) => {
             <View style={styles.container_tareas}>
                 { tareas.length !== 0 ? 
                     <FlatList
-                    data={number ==="" ? tareas : search}
+                    data={number ==="" ? tareasxd : search}
                     renderItem={({item}) => Task(e,item)}
                     keyExtractor={(item, index) => index.toString()}
                     />

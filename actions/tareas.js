@@ -2,7 +2,8 @@ import {
     RETRIEVE_TAREAS,
     RETRIEVE_TAREA,
     CREATE_TAREA,
-    UPDATE_TAREA} from "./types";
+    UPDATE_TAREA,
+    DELETE_TAREA} from "./types";
   import AsyncStorage from '@react-native-async-storage/async-storage';
 
   
@@ -94,4 +95,20 @@ import {
           console.log("ERROR2")
       }
       
+  }
+  export const eliminar_tarea = (id, categoria) =>async (dispatch) => {
+    const result = await AsyncStorage.getItem(`categoria-${categoria}`);
+    const result_hecho = await AsyncStorage.getItem(`hechas-${categoria}`);
+    const parseResult = result === null ? [] : JSON.parse(result)
+    var edit = parseResult.filter(b => b.id != id);
+    await AsyncStorage.setItem(`categoria-${categoria}`, JSON.stringify(edit))
+    try{
+      dispatch({
+        type: DELETE_TAREA,
+        payload: edit
+      })
+    }catch{
+        console.log("ERROR2")
+    }
+    return [parseResult.find(b => b.id == id)];
   }

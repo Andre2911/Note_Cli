@@ -1,12 +1,14 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { StyleSheet, Text, View, Dimensions, TextInput,FlatList} from 'react-native';
-// import { FontAwesome } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { retrieve_tareas_completadas } from '../../../actions/tareas_completadas';
 
 const Task = (item) => {
     return(
         <View style={styles.container_task_check}>
-            <Text style={styles.item}>• {item.key}</Text>
-            <Text style={styles.item_time}>{item.time}</Text>
+            <Text style={styles.item}>• {item.name}</Text>
+            <Text style={styles.item_time}>{item.tiempo}</Text>
         </View>
         
     )
@@ -15,13 +17,14 @@ const Task = (item) => {
 export const Hecho = (e) => {
     const [number, onChangeNumber] = React.useState(null);
 
-    const data = [
-        {key: 'Laboratorio 11 Multipataforma', time: '1 h 12 min'},
-        {key: 'Exposiscion Proyecto Final', time: '3 h 01 min'},
-        {key: 'Laboratorio 2 IOs', time: '1 h 42 min'},
-        {key: 'Presentacion Nubes', time: '2 h 12 min'},
-        {key: 'Exposicion Proyecto Final', time: '1 h 34 min'},
-    ]
+    const dispatch = useDispatch();
+
+    const tareas = useSelector(state => state.tareas_completadas);
+    console.log(tareas, "tareas hechas papu")
+    useEffect(() => {
+        dispatch(retrieve_tareas_completadas(e.extraData))
+    },[dispatch])
+
     return(
         <View style={styles.container}>
             <Text style={styles.text}>Realizado - {e.extraData}</Text>
@@ -37,7 +40,7 @@ export const Hecho = (e) => {
             <Text style={styles.number_tareas}>5 Tareas Hechas</Text>
             <View style={styles.container_tareas}>
                 <FlatList
-                    data={data}
+                    data={tareas}
                     renderItem={({item}) => Task(item)}
                 />
             </View>

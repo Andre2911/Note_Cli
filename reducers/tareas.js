@@ -20,7 +20,7 @@ const tareasReducer =  (state = initialstate, action) => {
         case RETRIEVE_TAREA:
             return payload.find(n => n.id === action.n);
         case DELETE_TAREA:
-            return state.filter(tarea => tarea.id !== payload.id);
+            return payload
         case UPDATE_TAREA:
             return payload;
         default:

@@ -1,8 +1,6 @@
 import { 
-    RETRIEVE_TIEMPO,
-    UPDATE_TIEMPO,
-    COMPLETED_TIEMPO,
- } from "../actions/types";
+    RETRIEVE_TAREAS_COMPLETADAS,
+    DELETE_TAREA_COMPLETADA} from "../actions/types";
 
 
 const initialstate = []
@@ -11,12 +9,12 @@ const tareasReducer =  (state = initialstate, action) => {
     // const result = await AsyncStorage.getItem('categoria');
     // console.log(result)
     switch (type) {
-        case RETRIEVE_TIEMPO:
+
+        case RETRIEVE_TAREAS_COMPLETADAS:
             return payload;
-        case UPDATE_TIEMPO:
+        case DELETE_TAREA_COMPLETADA:
             return payload
-        case COMPLETED_TIEMPO:
-            return payload;
+
         default:
             return state;
     }

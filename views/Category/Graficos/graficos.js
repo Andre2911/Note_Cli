@@ -9,7 +9,8 @@ export const Graficos = (e) => {
     const f = new Date()
     const dia = new Date(f.getFullYear(), f.getMonth(), f.getDate())
     const data = useSelector(store => store.tiempo)
-
+    console.log(data,"data mostrado en graficos")
+    
     var tiempo_total = 0
     let DA
 
@@ -32,7 +33,7 @@ export const Graficos = (e) => {
     useEffect(() => {
         dispatch(retrieveTiempo_categoria(e.extraData))
     },[dispatch])
-
+    console.log(DA,"Da")
     const secondsToString = (seconds)=> {
         var hour = Math.floor(seconds / 3600);
         hour = (hour < 10)? '0' + hour : hour;
@@ -51,7 +52,7 @@ export const Graficos = (e) => {
         "Machu Picchu no se construyó en un día"]
     var rand = Math.floor(Math.random()*frases_inspiradoras.length);
     var rValue = frases_inspiradoras[rand];
-    console.log(data[1],"elementos de graficos")
+
     return(
         <ScrollView style={styles.container}>
         {/* <View style={styles.container}> */}
