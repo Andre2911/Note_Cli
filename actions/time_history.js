@@ -9,6 +9,7 @@ import { parse } from "@babel/core";
 export const retrieveTiempo_categoria = (categoria) => async (dispatch) => {
     const tiempo = await AsyncStorage.getItem(`tiempo-${categoria}`);
     const parseResult = tiempo === null ? [] : JSON.parse(tiempo)
+    
     try {
         dispatch({
             type: RETRIEVE_TIEMPO,
@@ -56,11 +57,14 @@ export const tarea_update_time = (id, tiempo, nombre, categoria, dia) => async(d
     const parseResult = result === null ? [] : JSON.parse(result)
     const data = [{[dia]:[{id: id, tiempo:tiempo, nombre: nombre, categoria: categoria, }]}]
     const data2 = {[dia]:[{id: id, tiempo:tiempo, nombre: nombre, categoria: categoria}]}
-    let fechas = parseResult.every((a)=> {
-        return new Date(Object.keys(a)[0]) < new Date(dia.getFullYear(), dia.getMonth(), dia.getDate(), 23,59)
-        
-    })
 
+    const fech = parseResult.some((a)=> {
+        return new Date(Object.keys(a)[0]).getTime() == new Date(dia.getFullYear(), dia.getMonth(), dia.getDate()).getTime()
+    })
+    console.log(fech,"some")
+    //si es menor estamos en un nuevo DIA
+    //si es mayor estamos en el mismo dia 
+   
 
     if (result == null){    
         try{
@@ -75,23 +79,28 @@ export const tarea_update_time = (id, tiempo, nombre, categoria, dia) => async(d
     }else{
             
     var key2 = ""
-
     const fechas_incluidas = parseResult.find((a)=> {
         key2 = Object.keys(a)[0]
-        return new Date(Object.keys(a)[0]) < new Date(dia.getFullYear(), dia.getMonth(), dia.getDate(), 23,59)
-    })[`${key2}`].map(a=>a.id)
+        return new Date(Object.keys(a)[0]).getTime() == new Date(dia.getFullYear(), dia.getMonth(), dia.getDate()).getTime()
+    })[`${key2}`].map(a=>a.id) // Array con todos los id de las tareas 
 
-        if (fechas){ //Si estamos en el mismo dia 
+
+        if (fech){ //Si estamos en el mismo dia 
             console.log("ESTAMOS EN EL MISMO DIA")
             var key = ""
             let DA = parseResult.find((a)=> {
                 key = Object.keys(a)[0]
-                return new Date(Object.keys(a)[0]) < new Date(dia.getFullYear(), dia.getMonth(), dia.getDate(), 23,59)
+                return new Date(Object.keys(a)[0]).getTime() == new Date(dia.getFullYear(), dia.getMonth(), dia.getDate()).getTime()
             })
+            console.log(DA,"DA95")
             if (fechas_incluidas.includes(id)){
                 console.log("si esta en la lista")
+                console.log(DA[key].find(a=>{
+                    console.log(id,"idicito",a.id)
+                    return a.id==id}),"line 97 timehostory")
                 try{
                     DA[key].find(a=>a.id == id).tiempo = DA[key].find(a=>a.id == id).tiempo+tiempo
+                    console.log(parseResult,"line 101 timehostory")
                     await AsyncStorage.setItem(`tiempo-${categoria}`, JSON.stringify(parseResult))
                 }catch{
                     console.log("ERROR2")
@@ -103,6 +112,7 @@ export const tarea_update_time = (id, tiempo, nombre, categoria, dia) => async(d
             }
 
         }else{  //Si estamos en un dia diferente
+            console.log("disitinto dia")
             const objectResult = JSON.parse(result).map((item) => item);
             objectResult.push(data2)
             console.log("ES UN NUEVO DIA :V")

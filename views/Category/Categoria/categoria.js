@@ -59,7 +59,7 @@ export const Categoria = (e) => {
     if(tareas.lenght===0){
         retrieveTareas(e.extraData)
     }
-    console.log(tareas)
+    // console.log(tareas)
     return(
         <View style={styles.container}>
             <StatusBar barStyle="light-content"/>

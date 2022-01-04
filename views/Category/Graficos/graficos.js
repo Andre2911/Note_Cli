@@ -9,8 +9,10 @@ export const Graficos = (e) => {
     const f = new Date()
     const dia = new Date(f.getFullYear(), f.getMonth(), f.getDate())
     const data = useSelector(store => store.tiempo)
+
     var tiempo_total = 0
     let DA
+
     try{
         DA = data.find((a)=> {
             key = Object.keys(a)[0]
@@ -20,14 +22,12 @@ export const Graficos = (e) => {
               if (x.tiempo > y.tiempo) {return -1;}
               return 0;
           }); // Array con actividades que se hicieron hoy ordenado de mayor a menos por tiempo
-        //   DA.map((a,id)=>{
-        //       a.push()
-        //   })
-        console.log(DA, "tiempo") 
+    
         tiempo_total= DA.reduce((a, b) => a + (b["tiempo"] || 0), 0) // hallo el tiempo total del array
     }catch{
         DA = []
     }
+ 
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(retrieveTiempo_categoria(e.extraData))
@@ -51,6 +51,7 @@ export const Graficos = (e) => {
         "Machu Picchu no se construyó en un día"]
     var rand = Math.floor(Math.random()*frases_inspiradoras.length);
     var rValue = frases_inspiradoras[rand];
+    console.log(data[1],"elementos de graficos")
     return(
         <ScrollView style={styles.container}>
         {/* <View style={styles.container}> */}
@@ -65,17 +66,19 @@ export const Graficos = (e) => {
                             xd["color"] = colors[id]
                             return xd
                         }).map((i,ias)=>{
+                            
                             let ti = Math.round(i.tiempo*100/tiempo_total)
                             return(
-                                <>
-                                <View key={ias} style = 
-                                {{width: `${ti}%`,
-                                // borderWidth:1, 
-                                // borderColor: '#fff', 
-                                zIndex: -1,
-                                backgroundColor: i.color
+                                
+                                <View key={ias} 
+                                    style = 
+                                    {{width: `${ti}%`,
+                                    // borderWidth:1, 
+                                    // borderColor: '#fff', 
+                                    zIndex: -1,
+                                    backgroundColor: i.color
                                 }}></View>
-                                </>
+                                
                             )
                         })}
                     </View>
@@ -84,9 +87,8 @@ export const Graficos = (e) => {
                             xd["color"] = colors[id]
                             return xd
                         }).map((item,as) =>{
-                    console.log(item, "items de la lista")
                     return(
-                    <View style={styles.container_tarea} key={as}> 
+                    <View style={styles.container_tarea} key={item.id}> 
                         <Text style={styles.text_tarea}>•  {item.nombre} </Text>
                         <View style={styles.text_tarea_point}>
                             <View style={[styles.category__point, {backgroundColor: item.color}]}></View>
@@ -169,6 +171,7 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     container_chart:{
+        overflow: 'hidden',
         marginTop: 20,
         marginBottom: 15,
         width: Dimensions.get('window').width - 50,
@@ -177,7 +180,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         flexWrap: 'nowrap',
-        zIndex: 1
+        zIndex: 1 
     },
     container_tarea:{
         marginTop: 10,
